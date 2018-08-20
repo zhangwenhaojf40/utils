@@ -1,12 +1,26 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
+apply plugin: 'com.novoda.bintray-release'
+
+publish{
+    repoName = 'utilsLib'//远程仓库名字,不指明，默认是上传到maven
+    userOrg = 'zhangwenhaojf40'//bintray.com的用户名
+    groupId = 'com.hao.wen'//jcenter上的路径
+    artifactId = 'utilsLib'//项目名称
+    publishVersion = '1.0.0'//版本号
+}
+tasks.withType(Javadoc) {//防止编码问题
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
 android {
     compileSdkVersion 27
 
 
 
     defaultConfig {
-        applicationId "cn.wen.hao.utils"
+
         minSdkVersion 15
         targetSdkVersion 27
         versionCode 1
@@ -34,3 +48,117 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+
+/** 以下开始是将Android Library上传到jcenter的相关配置**/
+
+/*apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+//项目主页
+def siteUrl = 'https://github.com/zhangwenhaojf40/utils'    // project homepage
+//项目的版本控制地址
+def gitUrl = 'https://github.com/zhangwenhaojf40/utils.git' // project git
+
+//发布到组织名称名字，必须填写
+group = "cn.wen.hao.util"
+//发布到JCenter上的项目名字，必须填写
+def libName = "utils"
+// 版本号，下次更新是只需要更改版本号即可
+version = mavenVersionName
+*//**  上面配置后上传至jcenter后的编译路径是这样的： compile 'cn.bluemobi.dylan:sqlitelibrary:1.0'  **//*
+
+//生成源文件
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+//生成文档
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    options.encoding "UTF-8"
+    options.charSet 'UTF-8'
+    options.author true
+    options.version true
+    options.links "https://github.com/linglongxin24/FastDev/tree/master/mylibrary/docs/javadoc"
+    failOnError false
+}
+
+//文档打包成jar
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+//拷贝javadoc文件
+task copyDoc(type: Copy) {
+    from "${buildDir}/docs/"
+    into "docs"
+}
+
+//上传到jcenter所需要的源码文件
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+// 配置maven库，生成POM.xml文件
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                // Add your description here
+                description 'my utils for test'
+                name 'Android Commonly used utils'  //项目描述
+                url siteUrl
+                // Set your license
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer { // 开发者信息
+                        id 'zhangwenhaojf40'
+                        name 'ZhangWenHao'
+                        email 'zhangwenhaojf40@126.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+
+//上传到jcenter
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+bintray {
+    user = properties.getProperty("bintray.user")    //读取 local.properties 文件里面的 bintray.user
+    key = properties.getProperty("bintray.apikey")   //读取 local.properties 文件里面的 bintray.apikey
+    configurations = ['archives']
+    pkg {
+        repo = "maven"
+        name = libName    //发布到JCenter上的项目名字，必须填写
+        desc = 'This is a lightweight SQLite database framework'    //项目描述
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            desc = 'This is a lightweight SQLite database framework'
+            gpg {
+                sign = true //Determines whether to GPG sign the files. The default is false
+                passphrase = properties.getProperty("bintray.gpg.password")
+                //Optional. The passphrase for GPG signing'
+            }
+        }
+    }
+}*/

@@ -2,14 +2,13 @@ apply plugin: 'com.android.library'
 
 /** 以下开始是将Android Library上传到jcenter的相关配置**/
 apply plugin: 'com.novoda.bintray-release'//添加
-def siteUrl = 'https://bintray.com/zhangwenhaojf40/Test'  //仓库地址
 publish{
     repoName = 'Test'//远程仓库名字
     userOrg = 'zhangwenhaojf40'//bintray.com的用户名
     groupId = 'she.hui.zhang'//依赖的时候  路径地址
     artifactId = 'Tools'//项目名称
     publishVersion = '1.0.0'//版本号
-    website = siteUrl//项目主页
+    website = 'https://bintray.com/zhangwenhaojf40/Test'//项目主页
 }
 tasks.withType(Javadoc) {//防止编码问题
     options.addStringOption('Xdoclint:none', '-quiet')
