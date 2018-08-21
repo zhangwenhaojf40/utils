@@ -1,5 +1,5 @@
 # utils
-![](https://img.shields.io/badge/release-1.0.0-green.svg)
+[![](https://img.shields.io/badge/release-1.0.0-green.svg)](https://github.com/zhangwenhaojf40/utils/tree/master/utils)
 
 ## 用法：
   
