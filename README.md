@@ -8,8 +8,9 @@
         compile 'com.hao.wen:utilsLib:1.0.0'
 
 #### 集成工具类：
-      * ActivityManager 
-      * LogUtils
-      * PreferenceTool
+      
+   * ActivityManager 
+   * LogUtils
+   * PreferenceTool
           
           
