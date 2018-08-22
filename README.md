@@ -7,6 +7,9 @@
   
         compile 'com.hao.wen:utilsLib:1.0.0'
 
-#### 1.集成Log工具：
-          LogUtils.d("========");
+#### 集成工具类：
+      * ActivityManager 
+      * LogUtils
+      * PreferenceTool
+          
           
